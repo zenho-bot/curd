@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
 
-namespace CurdBackend.Models.DbContact
+namespace Curd.Models.DbContact
 {
     public class MY_BackendModule
     {
@@ -132,7 +132,7 @@ namespace CurdBackend.Models.DbContact
             string value = "(";
             string result = "";
 
-            queryData.Add(thisAbrv + "created_user", "0");
+            
 
             foreach (var val in queryData) {
                 field += val.Key + ",";
@@ -141,7 +141,8 @@ namespace CurdBackend.Models.DbContact
                 values.Add(val.Value);
             }
 
-            field = field +  " )";
+            field = field + thisAbrv + "created_date" + "," + thisAbrv + "edited_date )";
+            value = value + "getdate()" + ",getdate())";
             sql += field + "VALUES" + value;
 
             result = ReturnString(sql, parameters, values);
@@ -156,7 +157,6 @@ namespace CurdBackend.Models.DbContact
             string result = "";
             string id = queryData[thisID];
 
-           
 
             foreach (var val in queryData)
             {
@@ -168,7 +168,7 @@ namespace CurdBackend.Models.DbContact
             values.Add(id);
 
             sql = sql.TrimEnd(',');
-            sql += " WHERE 1 = 1 AND " + thisID + " = @" + thisID;
+            sql += "," + thisAbrv + "edited_date = getdate() WHERE 1 = 1 AND " + thisID + " = @" + thisID;
 
             result = ReturnString(sql, parameters, values);
             return result;
@@ -181,8 +181,8 @@ namespace CurdBackend.Models.DbContact
             string sql = "UPDATE " + thisFrom + " SET ";
             string result = "";
             string id = queryData["id"];
+            queryData.Remove("id");
 
-            
 
             foreach (var val in queryData)
             {
@@ -194,7 +194,7 @@ namespace CurdBackend.Models.DbContact
             values.Add(id);
 
             sql = sql.TrimEnd(',');
-            sql += " WHERE 1 = 1 AND " + thisID + " = @" + thisID;
+            sql += "," + thisAbrv + "edited_date = getdate() WHERE 1 = 1 AND " + thisID + " = @" + thisID;
 
             result = ReturnString(sql, parameters, values);
             return result;

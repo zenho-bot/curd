@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Web;
 
-namespace CurdBackend.Models.DbContact
+namespace Curd.Models.DbContact
 {
     public class MessageModule : MY_BackendModule
     {
@@ -19,7 +19,7 @@ namespace CurdBackend.Models.DbContact
             
         }
 
-        public DataTable getList(Dictionary<string, string> queryData = null, string offsetStart = null, string perPage = null)
+        public DataTable getList()
         {
             
             List<string> parameters = new List<string>();
@@ -32,19 +32,7 @@ namespace CurdBackend.Models.DbContact
             string offset = "";
             string sql = "";
 
-            if (queryData != null)
-            {
-               
-            }
-
-            if (offsetStart != null && perPage != null)
-            {
-                offset += "OFFSET @offsetStart ROWS FETCH NEXT @perPage ROWS ONLY;";
-                parameters.Add("@offsetStart");
-                values.Add(offsetStart);
-                parameters.Add("@perPage");
-                values.Add(perPage);
-            }
+           
 
             sql = select + from + where + order + offset;
             dt = ReturnDataTable(sql, parameters, values);

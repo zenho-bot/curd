@@ -1,15 +1,47 @@
-﻿@{
+﻿@using System.Data;
+@{
     ViewBag.Title = "Home Page";
 }
-
+@if (ViewBag.alerts != null)
+{
+    
+    <h5>@Html.Raw(ViewBag.alerts)</h5>
+    
+   
+}
 
 <div class="row">
+    
     <div class="col-md-4">
         <h2></h2>
         <p>
-            
+            <a href="/@(ViewBag.controllerName)/AddForm"> 新增留言 </a>
         </p>
-        
+        <table class="table table-striped table-bordered table-hover" >
+            <thead>
+                <tr>
+                    
+                    <td>主題</td>
+                    <td>內容</td>
+                    <td>功能</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow val in ViewBag.result)
+                {
+                    <tr>
+                        
+                        <td>@(val["message_title"])</td>
+                        <td>@(val["message_content"])</td>
+                        <td>
+                            <a href="/@(ViewBag.controllerName)/UpdateForm/?id=@(val["message_id"])"> 修改 </a>
+                            <a href="/@(ViewBag.controllerName)/UpdateForm/?id=@(val["message_id"])"> 刪除 </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
     </div>
     
 </div>
