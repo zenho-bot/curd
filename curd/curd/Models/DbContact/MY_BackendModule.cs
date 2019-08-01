@@ -178,23 +178,15 @@ namespace Curd.Models.DbContact
         {
             List<string> parameters = new List<string>();
             List<string> values = new List<string>();
-            string sql = "UPDATE " + thisFrom + " SET ";
+            string sql = "delete from " + thisFrom + " WHERE 1 = 1 AND " + thisID + " = @" + thisID; ;
             string result = "";
             string id = queryData["id"];
             queryData.Remove("id");
 
-
-            foreach (var val in queryData)
-            {
-                sql += val.Key + " = @" + val.Key + ",";
-                parameters.Add("@" + val.Key);
-                values.Add(val.Value);
-            }
             parameters.Add("@" + thisID);
             values.Add(id);
 
             sql = sql.TrimEnd(',');
-            sql += "," + thisAbrv + "edited_date = getdate() WHERE 1 = 1 AND " + thisID + " = @" + thisID;
 
             result = ReturnString(sql, parameters, values);
             return result;

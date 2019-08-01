@@ -109,5 +109,30 @@ namespace curd.Controllers
             ViewBag.controllerName = controllerName;
             return View();
         }
+
+        public ActionResult DeleteAction()
+        {
+            
+            bool result = false;
+            int i = 0;
+            string insertId = "";
+
+            postQueryData = DataConvert.PostToKeyValue();
+            if (postQueryData.ContainsKey("op") && postQueryData["op"] == "delete")
+            {
+                postQueryData.Remove("op");
+                insertId = message.deleteData(postQueryData);
+                result = int.TryParse(insertId, out i);
+                if (!result)
+                {
+                    TempData["alerts"] = "資料錯誤";
+                }
+                else
+                {
+                    TempData["alerts"] = "刪除完成";
+                }
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
