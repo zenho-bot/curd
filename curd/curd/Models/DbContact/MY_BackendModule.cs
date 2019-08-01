@@ -156,7 +156,7 @@ namespace Curd.Models.DbContact
             string sql = "UPDATE " + thisFrom + " SET ";
             string result = "";
             string id = queryData[thisID];
-
+            queryData.Remove(thisID);
 
             foreach (var val in queryData)
             {

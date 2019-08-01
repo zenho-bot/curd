@@ -56,7 +56,55 @@ namespace curd.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            
+
+            ViewBag.actionName = actionName;
+            ViewBag.controllerName = controllerName;
+            return View();
+        }
+        public ActionResult UpdateForm()
+        {
+            DataTable dt = new DataTable();
+            DataRow dr;
+            bool result = false;
+            int i = 0;
+            string insertId = "";
+            getQueryData = DataConvert.GetToKeyValue();
+            postQueryData = DataConvert.PostToKeyValue();
+            if (postQueryData.ContainsKey("op") && postQueryData["op"] == "update")
+            {
+
+                postQueryData.Remove("op");
+
+                insertId = message.updateData(postQueryData);
+                result = int.TryParse(insertId, out i);
+                if (!result)
+                {
+                    TempData["alerts"] = "資料錯誤";
+                }
+                else
+                {
+                    TempData["alerts"] = "修改完成";
+                }
+                return RedirectToAction("Index");
+            }
+            if (!getQueryData.ContainsKey("id"))
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                dt = message.getData(getQueryData["id"]);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    dr = dt.Rows[0];
+                }
+                else
+                {
+                    TempData["alerts"] = "資料錯誤";
+                    return RedirectToAction("Index");
+                }
+            }
+            ViewBag.result = dr;
             ViewBag.actionName = actionName;
             ViewBag.controllerName = controllerName;
             return View();
